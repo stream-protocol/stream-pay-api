@@ -33,7 +33,7 @@ Before you begin, ensure you have met the following requirements:
 1. Clone the repository:
 
    ```shell
-   git clone https://github.com/yourusername/streampay-api.git
+   git clone https://github.com/stream-protocol/streampay-api.git
    cd streampay-api
    ```
 
