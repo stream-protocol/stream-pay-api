@@ -1,166 +1,134 @@
-Certainly, here's an updated README.md for your StreamPay API project, including the new "Process Payment" endpoint:
+# StreamPay API Documentation
 
-```markdown
-# StreamPay API
-
-StreamPay is a web3 payment gateway that seamlessly integrates with the Solana blockchain, enabling merchants to accept payments securely and efficiently. This API documentation provides an overview of the StreamPay API and its features.
+StreamPay is a web3 payment gateway that integrates with the Solana blockchain. This API allows you to process payments, retrieve payment details, manage webhooks, and more.
 
 ## Table of Contents
 
-- [Getting Started](#getting-started)
-  - [Installation](#installation)
+- [StreamPay API Documentation](#streampay-api-documentation)
+  - [Table of Contents](#table-of-contents)
+  - [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+  - [Usage](#usage)
+    - [Processing Payments](#processing-payments)
+    - [Retrieving Payment Details](#retrieving-payment-details)
+    - [Webhook Configuration](#webhook-configuration)
+    - [Listing Payments](#listing-payments)
+    - [Refunding Payments](#refunding-payments)
   - [Configuration](#configuration)
-- [Usage](#usage)
-  - [Process Payment](#process-payment)
-  - [Retrieve Payment Details](#retrieve-payment-details)
-  - [List Payments](#list-payments)
-  - [Refund Payment](#refund-payment)
-  - [Webhook Configuration](#webhook-configuration)
-- [API Reference](#api-reference)
-- [Contributing](#contributing)
-- [License](#license)
+  - [Contributing](#contributing)
+  - [License](#license)
 
 ## Getting Started
 
+### Prerequisites
+
+Before you begin, ensure you have met the following requirements:
+
+- Node.js and npm installed on your development machine.
+- A Solana blockchain network or RPC URL configured.
+
 ### Installation
 
-1. Clone this repository to your local machine:
+1. Clone the repository:
 
    ```shell
-   git clone https://github.com/your-username/streampay-api.git
-   ```
-
-2. Navigate to the project directory:
-
-   ```shell
+   git clone https://github.com/yourusername/streampay-api.git
    cd streampay-api
    ```
 
-3. Install the required dependencies:
+2. Install the dependencies:
 
    ```shell
    npm install
    ```
 
-### Configuration
+3. Configure your Solana network and API settings (see [Configuration](#configuration)).
 
-Before using the StreamPay API, you need to configure it with the appropriate settings, including Solana network endpoints and API keys.
-
-1. Create a `.env` file in the project root:
+4. Start the server:
 
    ```shell
-   touch .env
+   npm start
    ```
-
-2. Add the following configuration values to the `.env` file:
-
-   ```dotenv
-   # Solana RPC endpoint (e.g., testnet, mainnet, or devnet)
-   SOLANA_RPC_URL=<Solana_RPC_URL>
-
-   # Alchemy RPC endpoint (optional)
-   ALCHEMY_RPC_URL=<Alchemy_RPC_URL>
-   ```
-
-3. Save the `.env` file.
 
 ## Usage
 
-### Process Payment
+### Processing Payments
 
-To initiate a payment through the StreamPay API, use the `POST /streampay/process-payment` endpoint. Provide the required parameters in the request body, including `paymentId`, `amount`, `currency`, `merchantWalletAddress`, and `customerWalletAddress`.
-
-Example Request:
+To process a payment, make a `POST` request to `/process-payment` with the payment details in the request body.
 
 ```http
-POST /streampay/process-payment
+POST /process-payment
 Content-Type: application/json
 
 {
-  "paymentId": "123456789",
-  "amount": 100.00,
-  "currency": "STRM",
+  "paymentId": "unique_payment_id",
+  "amount": 100,
+  "currency": "USD",
   "merchantWalletAddress": "merchant_wallet_address",
   "customerWalletAddress": "customer_wallet_address"
 }
 ```
 
-Example Response:
+### Retrieving Payment Details
 
-```json
+To retrieve payment details, make a `GET` request to `/payment/{paymentId}` where `{paymentId}` is the unique ID of the payment.
+
+```http
+GET /payment/{paymentId}
+```
+
+### Webhook Configuration
+
+To configure webhooks for receiving real-time payment notifications, make a `POST` request to `/webhooks`.
+
+```http
+POST /webhooks
+Content-Type: application/json
+
 {
-  "message": "Payment processed successfully",
-  "paymentId": "123456789",
-  "amount": 100.00,
-  "currency": "STRM",
-  "merchantWalletAddress": "merchant_wallet_address",
-  "customerWalletAddress": "customer_wallet_address",
-  "transactionSignature": "transaction_signature"
+  "url": "https://yourwebhookurl.com",
+  "events": ["payment_success", "payment_failure"]
 }
 ```
 
-For detailed API reference, see the [API Reference](#api-reference) section below.
+### Listing Payments
 
-### Retrieve Payment Details
+To list payments with optional filtering based on merchant ID, start date, and end date, make a `GET` request to `/payments`.
 
-- **Endpoint**: `GET /streampay/payment/:paymentId`
-- **Description**: Retrieve details of a specific payment.
-- **Parameters**:
-  - `paymentId` (string): Unique ID of the payment.
-- **Returns**: Payment details including payment status, transaction ID, and more.
+```http
+GET /payments?merchantId=your_merchant_id&startDate=2023-01-01&endDate=2023-12-31
+```
 
-#### List Payments
+### Refunding Payments
 
-- **Endpoint**: `GET /streampay/payments`
-- **Description**: Retrieve a list of recent payments processed through StreamPay.
-- **Parameters**:
-  - `merchantId` (string): ID of the merchant to filter payments.
-  - `startDate` (string, optional): Start date for filtering payments (format: YYYY-MM-DD).
-  - `endDate` (string, optional): End date for filtering payments (format: YYYY-MM-DD).
-- **Returns**: A list of payment records, including payment amount, currency, and timestamp.
+To initiate a refund for a previously processed payment, make a `POST` request to `/refund-payment` with the payment ID in the request body.
 
-#### Refund Payment
+```http
+POST /refund-payment
+Content-Type: application/json
 
-- **Endpoint**: `POST /streampay/refund-payment`
-- **Description**: Initiate a refund for a previously processed payment.
-- **Parameters**:
-  - `paymentId` (string): Unique ID of the payment to be refunded.
-- **Returns**: Confirmation of the refund request.
+{
+  "paymentId": "payment_to_refund_id"
+}
+```
 
-#### Webhook Configuration
+## Configuration
 
-- **Endpoint**: `POST /streampay/webhooks`
-- **Description**: Configure webhooks for receiving real-time payment notifications.
-- **Parameters**:
-  - `url` (string): The URL where webhook notifications will be sent.
-  - `events` (array of strings): List of payment events to trigger webhooks (e.g., "payment_success," "payment_failure").
-- **Returns**: Webhook configuration details, including a unique webhook ID.
+Configure your Solana network and API settings in the `config.js` file.
 
-Please refer to the respective endpoints for more detailed documentation on how to use them effectively. StreamPay is committed to providing a seamless payment processing experience for your business.
-
-## API Reference
-
-For detailed information about API endpoints, request and response formats, and more, refer to the [API Reference](api-reference.md) documentation.
-
-
-## Test: Access Swagger UI
-
-Open a web browser and navigate to <http://localhost:3000/api-docs> (or the URL where server is running). You should see StreamPay API documentation generated using Swagger UI.
-
-````
-curl -X POST -H "Content-Type: application/json" -d '{
-  "paymentId": "123456",
-  "amount": 10,
-  "currency": "USDC",
-  "merchantWalletAddress": "your_merchant_wallet_address",
-  "customerWalletAddress": "6sXT9zFDFgJMmXPHMiZM8maSx6KFosVbLkC4Ho9GezHz"
-}' <http://localhost:3000/streampay/process-payment>
-````
+```javascript
+module.exports = {
+  solanaRpcUrl: 'https://api.mainnet.solana.com', // Replace with your Solana network URL
+  alchemyRpcUrl: 'https://solana-mainnet.g.alchemy.com/v2/e_k2llhrt6iS-TxTwKFyfru1iDgeH1eF', // Replace with your Alchemy RPC URL
+  // Other configuration settings
+};
+```
 
 ## Contributing
 
-Contributions to this project are welcome! To contribute, please follow the [Contributing Guidelines](CONTRIBUTING.md).
+Contributions are welcome! Please follow the [Contributing Guidelines](CONTRIBUTING.md) to contribute to this project.
 
 ## License
 
-[MIT License](LICENSE).
+© 2023 Stream Protocol / Stream Payments Ltd.
