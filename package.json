@@ -1,0 +1,34 @@
+{
+  "name": "streampay-api",
+  "version": "1.0.0",
+  "description": "StreamPay is a web3 payment gateway that integrates seamlessly with the Solana blockchain, allowing merchants to accept payments with ease and security.",
+  "main": "server.js. Express.js",
+  "scripts": {
+    "test": "npm run test",
+    "express-server":"node Express.js",
+    "start-rpc-server": "solana-rpc-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stream-protocol/streampay-api.git"
+  },
+  "keywords": [
+    "streampay",
+    "api",
+    "gateway",
+    "payments"
+  ],
+  "author": "Stream Protocol",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stream-protocol/streampay-api/issues"
+  },
+  "homepage": "https://github.com/stream-protocol/streampay-api#readme",
+  "dependencies": {
+    "@solana/spl-token": "0.3.8",
+    "@solana/web3.js": "^1.87.2",
+    "express": "^4.18.2",
+    "solana-encryption": "1.0.9",
+    "web3": "^4.2.0"
+  }
+}

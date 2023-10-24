@@ -1,0 +1,6 @@
+const solanaWeb3 = require('@solana/web3.js');
+
+rpc_enable = true
+const rpcUrl = 'http://localhost:8899'; // Replace RPC server's URL
+const connection = new solanaWeb3.Connection(rpcUrl);
+

@@ -1,0 +1,184 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: StreamPay API
+  description: StreamPay is a web3 payment gateway that integrates with the Solana blockchain.
+basePath: /streampay
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+
+securityDefinitions:
+  apiKey:
+    type: apiKey
+    name: Authorization
+    in: header
+
+paths:
+  /process-payment:
+    post:
+      summary: Process a payment
+      description: Process a payment through StreamPay's system.
+      parameters:
+        - name: paymentId
+          in: body
+          description: Unique ID of the payment.
+          required: true
+          schema:
+            type: string
+        - name: amount
+          in: body
+          description: Amount to be paid.
+          required: true
+          schema:
+            type: number
+        - name: currency
+          in: body
+          description: Currency of the payment (STRM, SOL, USDC, EURC, USDT).
+          required: true
+          schema:
+            type: string
+        - name: merchantWalletAddress
+          in: body
+          description: Wallet address of the merchant.
+          required: true
+          schema:
+            type: string
+        - name: customerWalletAddress
+          in: body
+          description: Wallet address of the customer.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Confirmation of the processed payment.
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              paymentId:
+                type: string
+              amount:
+                type: number
+              currency:
+                type: string
+              merchantWalletAddress:
+                type: string
+              customerWalletAddress:
+                type: string
+
+  /payment/{paymentId}:
+    get:
+      summary: Retrieve payment details
+      description: Retrieve details of a specific payment.
+      parameters:
+        - name: paymentId
+          in: path
+          description: Unique ID of the payment.
+          required: true
+          type: string
+      responses:
+        200:
+          description: Payment details including payment status, transaction ID, and more.
+          schema:
+            type: object
+            properties:
+              paymentId:
+                type: string
+              status:
+                type: string
+              transactionId:
+                type: string
+
+  /payments:
+    get:
+      summary: List payments
+      description: Retrieve a list of recent payments processed through StreamPay.
+      parameters:
+        - name: merchantId
+          in: query
+          description: ID of the merchant to filter payments.
+          required: false
+          type: string
+        - name: startDate
+          in: query
+          description: Start date for filtering payments (format: YYYY-MM-DD).
+          required: false
+          type: string
+        - name: endDate
+          in: query
+          description: End date for filtering payments (format: YYYY-MM-DD).
+          required: false
+          type: string
+      responses:
+        200:
+          description: A list of payment records, including payment amount, currency, and timestamp.
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                paymentId:
+                  type: string
+                amount:
+                  type: number
+                currency:
+                  type: string
+                timestamp:
+                  type: string
+
+  /refund-payment:
+    post:
+      summary: Refund payment
+      description: Initiate a refund for a previously processed payment.
+      parameters:
+        - name: paymentId
+          in: body
+          description: Unique ID of the payment to be refunded.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Confirmation of the refund request.
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+
+  /webhooks:
+    post:
+      summary: Configure webhooks
+      description: Configure webhooks for receiving real-time payment notifications.
+      parameters:
+        - name: webhookConfig
+          in: body
+          description: Webhook configuration details.
+          required: true
+          schema:
+            type: object
+            properties:
+              url:
+                type: string
+              events:
+                type: array
+                items:
+                  type: string
+      responses:
+        200:
+          description: Webhook configuration details, including a unique webhook ID.
+          schema:
+            type: object
+            properties:
+              webhookId:
+                type: string
+
+# Add more paths for other endpoints...
+
+# Add definitions for request/response objects, security definitions, and more...
