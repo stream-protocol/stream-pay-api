@@ -142,9 +142,20 @@ Please refer to the respective endpoints for more detailed documentation on how 
 
 For detailed information about API endpoints, request and response formats, and more, refer to the [API Reference](api-reference.md) documentation.
 
+
 ## Test: Access Swagger UI
 
 Open a web browser and navigate to <http://localhost:3000/api-docs> (or the URL where server is running). You should see StreamPay API documentation generated using Swagger UI.
+
+````
+curl -X POST -H "Content-Type: application/json" -d '{
+  "paymentId": "123456",
+  "amount": 10,
+  "currency": "USDC",
+  "merchantWalletAddress": "your_merchant_wallet_address",
+  "customerWalletAddress": "6sXT9zFDFgJMmXPHMiZM8maSx6KFosVbLkC4Ho9GezHz"
+}' <http://localhost:3000/streampay/process-payment>
+````
 
 ## Contributing
 
@@ -152,4 +163,4 @@ Contributions to this project are welcome! To contribute, please follow the [Con
 
 ## License
 
-[ISC License](LICENSE).
+[MIT License](LICENSE).

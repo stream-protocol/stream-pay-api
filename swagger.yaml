@@ -152,33 +152,29 @@ paths:
               message:
                 type: string
 
-  /webhooks:
-    post:
-      summary: Configure webhooks
-      description: Configure webhooks for receiving real-time payment notifications.
-      parameters:
-        - name: webhookConfig
-          in: body
-          description: Webhook configuration details.
-          required: true
-          schema:
-            type: object
-            properties:
-              url:
+/webhooks:
+  post:
+    summary: Configure webhooks
+    description: Configure webhooks for receiving real-time payment notifications.
+    parameters:
+      - name: webhookConfig
+        in: body
+        description: Webhook configuration details.
+        required: true
+        schema:
+          type: object
+          properties:
+            url:
+              type: string
+            events:
+              type: array
+              items:
                 type: string
-              events:
-                type: array
-                items:
-                  type: string
-      responses:
-        200:
-          description: Webhook configuration details, including a unique webhook ID.
-          schema:
-            type: object
-            properties:
-              webhookId:
-                type: string
-
-# Add more paths for other endpoints...
-
-# Add definitions for request/response objects, security definitions, and more...
+    responses:
+      200:
+        description: Webhook configuration details, including a unique webhook ID.
+        schema:
+          type: object
+          properties:
+            webhookId:
+              type: string

@@ -5,7 +5,7 @@
   "main": "server.js. Express.js",
   "scripts": {
     "test": "npm run test",
-    "express-server":"node Express.js",
+    "express-server": "node Express.js",
     "start-rpc-server": "solana-rpc-server"
   },
   "repository": {
@@ -28,7 +28,13 @@
     "@solana/spl-token": "0.3.8",
     "@solana/web3.js": "^1.87.2",
     "express": "^4.18.2",
+    "pg": "^8.11.3",
+    "sequelize": "^6.33.0",
+    "sequelize-cli": "^6.6.1",
     "solana-encryption": "1.0.9",
-    "web3": "^4.2.0"
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
+    "web3": "^4.2.0",
+    "yamljs": "^0.3.0"
   }
 }
